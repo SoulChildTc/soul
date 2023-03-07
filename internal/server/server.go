@@ -7,17 +7,16 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"soul/global"
+	"soul/internal/logger"
 	"soul/middleware"
-	"soul/pkg/config"
-	"soul/pkg/logger"
 	"soul/router"
 	"syscall"
 	"time"
 )
 
 func StartServer() {
-	v := config.GetViper()
-	switch v.GetString("env") {
+	switch global.Config.GetString("env") {
 	case "test":
 		gin.SetMode(gin.TestMode)
 	case "prod":
@@ -36,7 +35,7 @@ func StartServer() {
 	router.InitRouter(r)
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", v.GetString("listen"), v.GetString("port")),
+		Addr:    fmt.Sprintf("%s:%s", global.Config.GetString("listen"), global.Config.GetString("port")),
 		Handler: r,
 	}
 

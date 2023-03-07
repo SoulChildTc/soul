@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-import log "soul/pkg/logger"
+import log "soul/internal/logger"
 
 func Logger(c *gin.Context) {
 	// 开始时间

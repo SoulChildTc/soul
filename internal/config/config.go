@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-var v *viper.Viper
-
 func setDefaultParams(v *viper.Viper) {
 	v.SetDefault("port", "8080")
 	v.SetDefault("env", "dev")
@@ -23,9 +21,9 @@ func setDefaultParams(v *viper.Viper) {
 	v.SetDefault("log.rotate.localtime", true)
 }
 
-func LoadConfig() {
+func LoadConfig() *viper.Viper {
 	// 初始化viper
-	v = viper.New()
+	v := viper.New()
 
 	// 设置默认参数
 	setDefaultParams(v)
@@ -38,14 +36,14 @@ func LoadConfig() {
 
 	// 命令行参数绑定
 	if err := v.BindPFlags(pflag.CommandLine); err != nil {
-		fmt.Println("命令行参数绑定失败")
+		fmt.Println("[Init] 命令行参数绑定失败")
 		panic(err.Error())
 	}
 
 	// 环境变量参数绑定
 	err := v.BindEnv("env", "RUN_ENV")
 	if err != nil {
-		fmt.Println("环境变量参数绑定失败")
+		fmt.Println("[Init] 环境变量参数绑定失败")
 		panic(err.Error())
 	}
 
@@ -63,12 +61,12 @@ func LoadConfig() {
 			// 没有指定配置文件，设置对应环境的默认配置文件路径
 			v.SetConfigName(fmt.Sprintf("app-%s", env))
 		}
-		fmt.Printf("当前运行环境: %s\n", env)
+		fmt.Printf("[Init] 当前运行环境: %s\n", env)
 
 	default:
 		v.Set("env", "dev")
 		v.SetConfigName("app-dev.yaml") // 默认dev环境
-		fmt.Printf("未设置当前运行环境, 默认: %s\n", "dev")
+		fmt.Printf("[Init] 未设置当前运行环境, 默认: %s\n", "dev")
 	}
 
 	// 设置viper, 加载配置文件
@@ -76,17 +74,13 @@ func LoadConfig() {
 	v.AddConfigPath(".")
 	v.AddConfigPath("./config")
 	if err := v.ReadInConfig(); err != nil {
-		fmt.Println("配置文件加载失败")
+		fmt.Println("[Init] 配置文件加载失败")
 		panic(err.Error())
 	}
 
 	// 设置环境变量前缀为appName
 	//v.SetEnvPrefix(v.GetString("appName"))
 
-	fmt.Printf("使用配置文件%s\n", v.ConfigFileUsed())
-
-}
-
-func GetViper() *viper.Viper {
+	fmt.Printf("[Init] 使用配置文件%s\n", v.ConfigFileUsed())
 	return v
 }
