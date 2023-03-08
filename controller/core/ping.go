@@ -14,7 +14,7 @@ type resp struct {
 //	@Description	do ping
 //	@Tags			core
 //	@Produce		json
-//	@Success		200	{object} resp
+//	@Success		200	{object}	resp
 //	@Router			/ping [get]
 func Ping(c *gin.Context) {
 	c.JSON(200, resp{Status: "pong"})
