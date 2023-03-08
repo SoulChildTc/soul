@@ -4,23 +4,41 @@ import (
 	"fmt"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"soul/global"
 	"strings"
 )
 
 func setDefaultParams(v *viper.Viper) {
+	v.SetDefault("appName", "soul")
+	v.SetDefault("listen", "0.0.0.0")
 	v.SetDefault("port", "8080")
 	v.SetDefault("env", "dev")
+	//v.SetDefault("config", "app-dev.yaml") // flag中设置默认值
 
 	// log配置
 	v.SetDefault("log.path", "./app.log")
+	v.SetDefault("log.level", "TRACE")
+	v.SetDefault("log.console", true)
+	v.SetDefault("log.closeFileLog", true)
+	// log轮转
 	v.SetDefault("log.rotate.enable", false)
 	v.SetDefault("log.rotate.maxSize", 50)
 	v.SetDefault("log.rotate.maxBackups", 0)
 	v.SetDefault("log.rotate.maxAge", 7)
 	v.SetDefault("log.rotate.compress", false)
 	v.SetDefault("log.rotate.localtime", true)
-}
 
+	// database配置
+	v.SetDefault("database.charset", "utf8mb4")
+	v.SetDefault("database.maxOpenConns", 50)
+	v.SetDefault("database.maxIdleConns", 50)
+	v.SetDefault("database.connMaxIdleTime", 5)
+	v.SetDefault("database.connMaxLifetime", 5)
+	v.SetDefault("database.logLevel", "info")
+	v.SetDefault("database.reportCaller", true)
+	v.SetDefault("database.driver", "sqlite")
+	v.SetDefault("database.path", "./data.db")
+}
 func LoadConfig() *viper.Viper {
 	// 初始化viper
 	v := viper.New()
@@ -31,6 +49,7 @@ func LoadConfig() *viper.Viper {
 	// 命令行参数获取
 	pflag.StringP("env", "e", "dev", `运行环境, 可选项目: dev or test prod`)
 	pflag.StringP("config", "c", "app-dev.yaml", `配置文件路径`)
+	pflag.BoolP("migrate", "m", false, `迁移数据库`)
 	pflag.Lookup("config").DefValue = "[./app-dev.yaml, ./config/app-dev.yaml]"
 	pflag.Parse()
 
@@ -62,11 +81,10 @@ func LoadConfig() *viper.Viper {
 			v.SetConfigName(fmt.Sprintf("app-%s", env))
 		}
 		fmt.Printf("[Init] 当前运行环境: %s\n", env)
-
 	default:
 		v.Set("env", "dev")
 		v.SetConfigName("app-dev.yaml") // 默认dev环境
-		fmt.Printf("[Init] 未设置当前运行环境, 默认: %s\n", "dev")
+		fmt.Printf("[Init] 未知环境,使用默认运行环境, 默认: %s\n", "dev")
 	}
 
 	// 设置viper, 加载配置文件
@@ -74,13 +92,26 @@ func LoadConfig() *viper.Viper {
 	v.AddConfigPath(".")
 	v.AddConfigPath("./config")
 	if err := v.ReadInConfig(); err != nil {
-		fmt.Println("[Init] 配置文件加载失败")
-		panic(err.Error())
+		panic("[Init] 配置文件读取失败" + err.Error())
 	}
 
 	// 设置环境变量前缀为appName
 	//v.SetEnvPrefix(v.GetString("appName"))
 
+	// 动态加载配置
+	//v.WatchConfig()
+	//
+	//v.OnConfigChange(func(e fsnotify.Event) {
+	//	if err = v.UnmarshalExact(&global.Config); err != nil {
+	//		fmt.Println("动态加载配置失败" + err.Error())
+	//	}
+	//})
+
 	fmt.Printf("[Init] 使用配置文件%s\n", v.ConfigFileUsed())
+	err = v.Unmarshal(&global.Config)
+	if err != nil {
+		panic("加载配置失败" + err.Error())
+	}
+
 	return v
 }

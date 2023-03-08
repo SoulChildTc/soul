@@ -1,0 +1,35 @@
+definitions:
+  core.resp:
+    properties:
+      status:
+        example: pong
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: SoulChild
+    url: http://soulchild.cn
+  description: This is a sample server celler server.
+  title: Swagger Example API
+  version: 0.0.1
+paths:
+  /ping:
+    get:
+      description: do ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.resp'
+      summary: health check
+      tags:
+      - core
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-token
+    type: apiKey
+swagger: "2.0"

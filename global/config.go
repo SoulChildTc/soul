@@ -1,5 +1,11 @@
 package global
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+	"soul/config"
+)
 
-var Config *viper.Viper
+var (
+	V      *viper.Viper
+	Config config.Configuration
+)

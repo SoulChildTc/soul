@@ -16,7 +16,7 @@ import (
 )
 
 func StartServer() {
-	switch global.Config.GetString("env") {
+	switch global.Config.Env {
 	case "test":
 		gin.SetMode(gin.TestMode)
 	case "prod":
@@ -35,7 +35,7 @@ func StartServer() {
 	router.InitRouter(r)
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", global.Config.GetString("listen"), global.Config.GetString("port")),
+		Addr:    fmt.Sprintf("%s:%d", global.Config.Listen, global.Config.Port),
 		Handler: r,
 	}
 

@@ -2,7 +2,6 @@ package logger
 
 import (
 	"context"
-	"fmt"
 	glogger "gorm.io/gorm/logger"
 	"soul/global"
 	"strings"
@@ -43,7 +42,6 @@ func (l logrusAdapter) Error(ctx context.Context, msg string, data ...interface{
 }
 
 func (l logrusAdapter) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
-	fmt.Println(ctx, begin, fc, err)
 	//if l.LogLevel <= Silent {
 	//	return
 	//}
@@ -77,7 +75,7 @@ func (l logrusAdapter) Trace(ctx context.Context, begin time.Time, fc func() (st
 
 func NewGormLogger() glogger.Interface {
 	var logLevel glogger.LogLevel
-	switch strings.ToLower(global.Config.GetString("database.logLevel")) {
+	switch strings.ToLower(global.Config.Database.LogLevel) {
 	case "info":
 		logLevel = glogger.Info
 	case "warn":
@@ -95,6 +93,6 @@ func NewGormLogger() glogger.Interface {
 
 	return logrusAdapter{
 		Config:       gConfig,
-		reportCaller: global.Config.GetBool("database.reportCaller"),
+		reportCaller: global.Config.Database.ReportCaller,
 	}
 }

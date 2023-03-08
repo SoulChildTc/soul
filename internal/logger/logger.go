@@ -19,21 +19,21 @@ var (
 func getMultiOutput() io.Writer {
 	var writer []io.Writer
 
-	logPath := global.Config.GetString("log.path")
+	logPath := global.Config.Log.Path
 
-	if global.Config.GetBool("log.console") {
+	if global.Config.Log.Console {
 		writer = append(writer, os.Stdout)
 	}
 
-	if !global.Config.GetBool("log.closeFileLog") {
-		if global.Config.GetBool("log.rotate.enable") {
+	if !global.Config.Log.CloseFileLog {
+		if global.Config.Log.Rotate.Enable {
 			writer = append(writer, &lumberjack.Logger{
 				Filename:   logPath,
-				MaxSize:    global.Config.GetInt("maxSize"),    // 单个文件最大大小, 单位M
-				MaxBackups: global.Config.GetInt("maxBackups"), // 最多保留多少个文件
-				MaxAge:     global.Config.GetInt("maxAge"),     // 每个最多保留多少天
-				Compress:   global.Config.GetBool("compress"),  // 启用压缩
-				LocalTime:  global.Config.GetBool("localTime"), // 默认使用UTC时间, 改为使用本地时间
+				MaxSize:    global.Config.Log.Rotate.MaxSize,    // 单个文件最大大小, 单位M
+				MaxBackups: global.Config.Log.Rotate.MaxBackups, // 最多保留多少个文件
+				MaxAge:     global.Config.Log.Rotate.MaxAge,     // 每个最多保留多少天
+				Compress:   global.Config.Log.Rotate.Compress,   // 启用压缩
+				LocalTime:  global.Config.Log.Rotate.Localtime,  // 默认使用UTC时间, 改为使用本地时间
 			})
 		} else {
 			f, err := os.OpenFile(logPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0755)
@@ -61,21 +61,20 @@ func InitLogger() {
 	//logger.SetReportCaller(true)  // 因为封装的原因,自带的输出位置有问题(暂时无法使用),使用log.InfoC可以输出代码位置
 
 	// 设置日志格式
-	if global.Config.GetString("env") == "dev" {
+	if global.Config.Env == "dev" {
 		logger.SetFormatter(&logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05", PadLevelText: true})
 	} else {
-
 		logger.SetFormatter(&logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
 	}
 
-	level, err := logrus.ParseLevel(global.Config.GetString("log.level"))
+	level, err := logrus.ParseLevel(global.Config.Log.Level)
 	if err != nil {
 		panic("未知的日志级别,可选项为[TRACE, DEBUG, INFO, WARN, ERROR, FATAL, PANIC]")
 	}
 	logger.SetLevel(level)
 
 	log = logger.WithFields(logrus.Fields{
-		"service": global.Config.GetString("appName"),
+		"service": global.Config.AppName,
 	})
 }
 

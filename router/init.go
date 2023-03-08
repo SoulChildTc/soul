@@ -2,17 +2,36 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"soul/router/system"
+	"soul/router/api/v1/k8s"
+	"soul/router/api/v1/user"
+	"soul/router/core"
 )
 
+func registerRoute(r gin.IRouter, groupName string, register func(r *gin.RouterGroup), middlewares ...gin.HandlerFunc) {
+	group := r.Group(groupName)
+	group.Use(middlewares...)
+	register(group)
+}
+
 func InitRouter(r *gin.Engine) {
-	registerRoute := func(groupName string, f func(r *gin.RouterGroup), middlewares ...gin.HandlerFunc) {
-		group := r.Group(groupName)
-		for _, middle := range middlewares {
-			group.Use(middle)
-		}
-		f(group)
+	/*
+		功能模块路由注册
+	*/
+
+	// core api
+	{
+		registerRoute(r, "", core.RegisterRoute)
 	}
 
-	registerRoute("", system.Sys)
+	// /api/v1
+	apiV1 := r.Group("/api/v1")
+	{
+		registerRoute(apiV1, "/user", user.RegisterRoute)
+		registerRoute(apiV1, "/k8s", k8s.RegisterRoute)
+	}
+
+	// /api/v2
+	{
+
+	}
 }

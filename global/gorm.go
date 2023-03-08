@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var Gorm *gorm.DB
-
-var SqlDB *sql.DB
+var (
+	DB    *gorm.DB
+	SqlDB *sql.DB
+)
