@@ -6,9 +6,8 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"os"
-	"runtime"
 	"soul/global"
-	"strings"
+	"soul/utils/logutil"
 )
 
 var (
@@ -86,28 +85,12 @@ func GetEntry() *logrus.Entry {
 	return log
 }
 
-func callerInfo(skip int) string {
-	_, file, line, ok := runtime.Caller(skip)
-	if !ok {
-		file = "<???>"
-		line = 0
-	} else {
-		slash := strings.LastIndex(file, "/")
-		if slash >= 0 {
-			file = file[slash+1:]
-		}
-	}
-	return fmt.Sprintf("%s:%d", file, line)
-}
-
 func Trace(format string, args ...interface{}) {
 	log.Tracef(format, args...)
 }
 
 func Debug(format string, args ...interface{}) {
-
 	log.Debugf(format, args...)
-
 }
 
 func Info(format string, args ...interface{}) {
@@ -131,29 +114,29 @@ func Panic(format string, args ...interface{}) {
 }
 
 func TraceC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Tracef(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Tracef(format, args...)
 }
 
 func DebugC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Debugf(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Debugf(format, args...)
 }
 
 func InfoC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Infof(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Infof(format, args...)
 }
 
 func WarnC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Warnf(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Warnf(format, args...)
 }
 
 func ErrorC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Errorf(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Errorf(format, args...)
 }
 
 func FatalC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Fatalf(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Fatalf(format, args...)
 }
 
 func PanicC(format string, args ...interface{}) {
-	log.WithField("file", callerInfo(2)).Panicf(format, args...)
+	log.WithField("file", logutil.CallerInfo(2)).Panicf(format, args...)
 }

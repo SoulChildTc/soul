@@ -20,5 +20,5 @@ func InitMiddleware(r *gin.Engine) {
 	// Set X-Request-Id header
 	//r.Use(RequestId())
 	// 500
-	r.Use(gin.Recovery())
+	r.Use(ErrorInterceptor)
 }

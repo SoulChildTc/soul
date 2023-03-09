@@ -1,11 +1,27 @@
-package utils
+package logutil
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"math"
+	"runtime"
 	"strings"
 	"time"
 )
+
+func CallerInfo(skip int) string {
+	_, file, line, ok := runtime.Caller(skip)
+	if !ok {
+		file = "<???>"
+		line = 0
+	} else {
+		slash := strings.LastIndex(file, "/")
+		if slash >= 0 {
+			file = file[slash+1:]
+		}
+	}
+	return fmt.Sprintf("%s:%d", file, line)
+}
 
 func GetDurationInMillisecond(start time.Time) (millisecond float64) {
 	end := time.Now()

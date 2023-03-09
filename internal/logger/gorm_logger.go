@@ -4,6 +4,7 @@ import (
 	"context"
 	glogger "gorm.io/gorm/logger"
 	"soul/global"
+	"soul/utils/logutil"
 	"strings"
 	"time"
 )
@@ -19,7 +20,7 @@ func (l logrusAdapter) LogMode(level glogger.LogLevel) glogger.Interface {
 
 func (l logrusAdapter) Info(ctx context.Context, msg string, data ...interface{}) {
 	if l.reportCaller {
-		log.WithContext(ctx).WithField("file", callerInfo(3)).Infof(msg, data...)
+		log.WithContext(ctx).WithField("file", logutil.CallerInfo(3)).Infof(msg, data...)
 	} else {
 		log.WithContext(ctx).Infof(msg, data...)
 	}
@@ -27,7 +28,7 @@ func (l logrusAdapter) Info(ctx context.Context, msg string, data ...interface{}
 
 func (l logrusAdapter) Warn(ctx context.Context, msg string, data ...interface{}) {
 	if l.reportCaller {
-		log.WithContext(ctx).WithField("file", callerInfo(3)).Warnf(msg, data...)
+		log.WithContext(ctx).WithField("file", logutil.CallerInfo(3)).Warnf(msg, data...)
 	} else {
 		log.WithContext(ctx).Warnf(msg, data...)
 	}
@@ -35,7 +36,7 @@ func (l logrusAdapter) Warn(ctx context.Context, msg string, data ...interface{}
 
 func (l logrusAdapter) Error(ctx context.Context, msg string, data ...interface{}) {
 	if l.reportCaller {
-		log.WithContext(ctx).WithField("file", callerInfo(3)).Errorf(msg, data...)
+		log.WithContext(ctx).WithField("file", logutil.CallerInfo(3)).Errorf(msg, data...)
 	} else {
 		log.WithContext(ctx).Errorf(msg, data...)
 	}

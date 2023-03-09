@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"soul/utils"
+	"soul/utils/logutil"
 	"time"
 )
 
@@ -17,7 +17,7 @@ func Logger(c *gin.Context) {
 	c.Next()
 
 	// 请求耗时
-	duration := utils.GetDurationInMillisecond(start)
+	duration := logutil.GetDurationInMillisecond(start)
 
 	path := c.Request.URL.Path
 	raw := c.Request.URL.RawQuery
