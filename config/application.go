@@ -8,4 +8,5 @@ type Configuration struct {
 	Env      string   `yaml:"env" mapstructure:"env"`
 	Config   string   `yaml:"config" mapstructure:"config"`
 	Database Database `yaml:"database" mapstructure:"database"`
+	Jwt      Jwt      `yaml:"jwt" mapstructure:"jwt"`
 }

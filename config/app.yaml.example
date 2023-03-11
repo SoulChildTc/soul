@@ -40,3 +40,6 @@ database:
   logLevel: info
   # 日志中显示sql在代码中位置,稍微影响性能
   reportCaller: true
+jwt:
+  secret: soul
+  jwtTtl: 12h

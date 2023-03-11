@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"soul/controller/core"
+	"soul/handler/controller/core"
 )
 
 // 用户模块路由

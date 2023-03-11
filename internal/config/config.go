@@ -38,6 +38,10 @@ func setDefaultParams(v *viper.Viper) {
 	v.SetDefault("database.reportCaller", true)
 	v.SetDefault("database.driver", "sqlite")
 	v.SetDefault("database.path", "./data.db")
+
+	// jwt 配置
+	v.SetDefault("jwt.secret", []byte("soul"))
+	v.SetDefault("jwt.ttl", "43200s") // 单位秒, 默认12小时
 }
 func LoadConfig() *viper.Viper {
 	// 初始化viper

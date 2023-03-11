@@ -5,20 +5,17 @@ import (
 )
 
 func InitMiddleware(r *gin.Engine) {
-
+	// panic 拦截器
+	r.Use(ErrorInterceptor)
 	// 日志处理
 	r.Use(Logger)
 
-	// 自定义错误处理
-	//r.Use(CustomError)
-	// NoCache is a middleware function that appends headers
-	//r.Use(NoCache)
-	//// 跨域处理
-	//r.Use(Options)
-	// Secure is a middleware function that appends security
-	//r.Use(Secure)
-	// Set X-Request-Id header
-	//r.Use(RequestId())
-	// 500
-	r.Use(ErrorInterceptor)
+	// 设置 X-Request-Id header
+	r.Use(RequestId)
+
+	// JWT Auth
+	r.Use(JwtAuth)
+
+	// TODO 跨域处理
+
 }

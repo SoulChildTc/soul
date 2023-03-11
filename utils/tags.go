@@ -1,4 +1,4 @@
-package tags
+package utils
 
 import (
 	"errors"
