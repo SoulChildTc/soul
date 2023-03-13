@@ -12,15 +12,14 @@ type User struct{}
 
 func (s *User) GetUserByMobile(mobile string) *model.User {
 	var user model.User
-	result := global.DB.Where("mobile = ?", mobile).First(&user)
-
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+	if err := global.DB.Where("mobile = ?", mobile).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil
-		} else {
-			log.Error(result.Error.Error())
 		}
+		log.Error(err.Error())
+		return nil
 	}
+
 	return &user
 }
 
