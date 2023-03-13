@@ -8,47 +8,9 @@ import (
 	"strings"
 )
 
-func setDefaultParams(v *viper.Viper) {
-	v.SetDefault("appName", "soul")
-	v.SetDefault("listen", "0.0.0.0")
-	v.SetDefault("port", "8080")
-	v.SetDefault("env", "dev")
-	//v.SetDefault("config", "app-dev.yaml") // flag中设置默认值
-
-	// log配置
-	v.SetDefault("log.path", "./app.log")
-	v.SetDefault("log.level", "TRACE")
-	v.SetDefault("log.console", true)
-	v.SetDefault("log.closeFileLog", true)
-	// log轮转
-	v.SetDefault("log.rotate.enable", false)
-	v.SetDefault("log.rotate.maxSize", 50)
-	v.SetDefault("log.rotate.maxBackups", 0)
-	v.SetDefault("log.rotate.maxAge", 7)
-	v.SetDefault("log.rotate.compress", false)
-	v.SetDefault("log.rotate.localtime", true)
-
-	// database配置
-	v.SetDefault("database.charset", "utf8mb4")
-	v.SetDefault("database.maxOpenConns", 50)
-	v.SetDefault("database.maxIdleConns", 50)
-	v.SetDefault("database.connMaxIdleTime", 5)
-	v.SetDefault("database.connMaxLifetime", 5)
-	v.SetDefault("database.logLevel", "error")
-	v.SetDefault("database.reportCaller", true)
-	v.SetDefault("database.driver", "sqlite")
-	v.SetDefault("database.path", "./data.db")
-
-	// jwt 配置
-	v.SetDefault("jwt.secret", []byte("soul"))
-	v.SetDefault("jwt.ttl", "43200s") // 单位秒, 默认12小时
-}
 func LoadConfig() *viper.Viper {
 	// 初始化viper
 	v := viper.New()
-
-	// 设置默认参数
-	setDefaultParams(v)
 
 	// 命令行参数获取
 	pflag.StringP("env", "e", "dev", `运行环境, 可选项目: dev or test prod`)
@@ -70,13 +32,23 @@ func LoadConfig() *viper.Viper {
 		panic(err.Error())
 	}
 
-	filePath := v.GetString("config")
+	// 获取当前运行环境
+	env := strings.TrimSpace(v.GetString("env"))
+
+	// 设置默认参数
+	if env == "test" {
+		setTestDefaultParams(v)
+	} else if env == "prod" {
+		setProdDefaultParams(v)
+	} else {
+		setDevDefaultParams(v)
+	}
 
 	// 不同环境读取不同配置文件
-	env := strings.TrimSpace(v.GetString("env"))
 	switch env {
 	// 只能是下面三种环境, 如果为其他的就设置为dev
 	case "dev", "test", "prod":
+		filePath := v.GetString("config")
 		if filePath != "" && v.IsSet("config") {
 			// 如果指定了配置文件路径，就读取指定的配置文件
 			v.SetConfigFile(filePath)
@@ -113,7 +85,6 @@ func LoadConfig() *viper.Viper {
 	//	}
 	//})
 
-	fmt.Printf("[Init] 使用配置文件%s\n", v.ConfigFileUsed())
 	err = v.Unmarshal(&global.Config)
 	if err != nil {
 		panic("加载配置失败" + err.Error())
