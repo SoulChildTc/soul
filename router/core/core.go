@@ -6,9 +6,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"soul/apis/controller/core"
 	_ "soul/docs"
+	"soul/middleware"
 )
 
 func RegisterRoute(r *gin.RouterGroup) {
 	r.GET("/ping", core.Ping)
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	swag := r.Group("/swagger").Use(middleware.BasicAuth)
+	swag.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
