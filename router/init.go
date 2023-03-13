@@ -2,8 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"soul/middleware"
 	"soul/router/api/v1/k8s"
-	"soul/router/api/v1/user"
+	"soul/router/api/v1/system"
 	"soul/router/core"
 )
 
@@ -23,10 +24,16 @@ func InitRouter(r *gin.Engine) {
 		registerRoute(r, "", core.RegisterRoute)
 	}
 
+	// /system
+	sys := r.Group("/system")
+	{
+		registerRoute(sys, "", system.RegisterRoute)
+	}
+
 	// /api/v1
 	apiV1 := r.Group("/api/v1")
+	apiV1.Use(middleware.JwtAuth)
 	{
-		registerRoute(apiV1, "/user", user.RegisterRoute)
 		registerRoute(apiV1, "/k8s", k8s.RegisterRoute)
 	}
 

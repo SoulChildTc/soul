@@ -2,7 +2,7 @@ package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	"soul/handler/controller/core"
+	"soul/apis/controller/core"
 )
 
 // k8s模块路由

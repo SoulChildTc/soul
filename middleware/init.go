@@ -14,7 +14,7 @@ func InitMiddleware(r *gin.Engine) {
 	r.Use(RequestId)
 
 	// JWT Auth
-	r.Use(JwtAuth)
+	//r.Use(JwtAuth)
 
 	// TODO 跨域处理
 
