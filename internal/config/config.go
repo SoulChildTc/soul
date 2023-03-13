@@ -96,7 +96,9 @@ func LoadConfig() *viper.Viper {
 	v.AddConfigPath(".")
 	v.AddConfigPath("./config")
 	if err := v.ReadInConfig(); err != nil {
-		panic("[Init] 配置文件读取失败" + err.Error())
+		fmt.Printf("[Init] 配置文件读取失败: %s, \n使用默认配置\n", err.Error())
+	} else {
+		fmt.Printf("[Init] 使用配置文件: %s\n", v.ConfigFileUsed())
 	}
 
 	// 设置环境变量前缀为appName
