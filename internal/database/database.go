@@ -3,8 +3,8 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"os"
@@ -73,6 +73,10 @@ func initMySqlGorm() (*gorm.DB, *sql.DB) {
 }
 
 func initSqliteGorm() (*gorm.DB, *sql.DB) {
+	/*
+		github.com/mattn/go-sqlite3底层驱动是C实现的，所以需要开启CGO，兼容性可能会不太好。
+		所以选择了性能稍弱的 github.com/glebarez/sqlite
+	*/
 	gormConfig := &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "t_",
