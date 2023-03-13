@@ -34,7 +34,7 @@ func setDefaultParams(v *viper.Viper) {
 	v.SetDefault("database.maxIdleConns", 50)
 	v.SetDefault("database.connMaxIdleTime", 5)
 	v.SetDefault("database.connMaxLifetime", 5)
-	v.SetDefault("database.logLevel", "info")
+	v.SetDefault("database.logLevel", "error")
 	v.SetDefault("database.reportCaller", true)
 	v.SetDefault("database.driver", "sqlite")
 	v.SetDefault("database.path", "./data.db")

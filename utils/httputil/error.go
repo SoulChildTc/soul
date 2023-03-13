@@ -11,7 +11,7 @@ func OK(c *gin.Context, data any, msg string) {
 		Msg:    msg,
 		Data:   data,
 	}
-	c.JSON(http.StatusBadRequest, resp)
+	c.JSON(http.StatusOK, resp)
 }
 
 func Error(c *gin.Context, msg string) {

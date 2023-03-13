@@ -2,6 +2,9 @@ package logger
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
 	"soul/global"
 	"soul/utils/logutil"
@@ -15,6 +18,7 @@ type logrusAdapter struct {
 }
 
 func (l logrusAdapter) LogMode(level glogger.LogLevel) glogger.Interface {
+	l.LogLevel = level
 	return l
 }
 
@@ -43,35 +47,40 @@ func (l logrusAdapter) Error(ctx context.Context, msg string, data ...interface{
 }
 
 func (l logrusAdapter) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
-	//if l.LogLevel <= Silent {
-	//	return
-	//}
-	//
-	//elapsed := time.Since(begin)
-	//switch {
-	//case err != nil && l.Config.LogLevel >= glogger.Error && (!errors.Is(err, ErrRecordNotFound) || !l.IgnoreRecordNotFoundError):
-	//	sql, rows := fc()
-	//	if rows == -1 {
-	//		l.Printf(l.traceErrStr, utils.FileWithLineNum(), err, float64(elapsed.Nanoseconds())/1e6, "-", sql)
-	//	} else {
-	//		l.Printf(l.traceErrStr, utils.FileWithLineNum(), err, float64(elapsed.Nanoseconds())/1e6, rows, sql)
-	//	}
-	//case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.LogLevel >= Warn:
-	//	sql, rows := fc()
-	//	slowLog := fmt.Sprintf("SLOW SQL >= %v", l.SlowThreshold)
-	//	if rows == -1 {
-	//		l.Printf(l.traceWarnStr, utils.FileWithLineNum(), slowLog, float64(elapsed.Nanoseconds())/1e6, "-", sql)
-	//	} else {
-	//		l.Printf(l.traceWarnStr, utils.FileWithLineNum(), slowLog, float64(elapsed.Nanoseconds())/1e6, rows, sql)
-	//	}
-	//case l.LogLevel == Info:
-	//	sql, rows := fc()
-	//	if rows == -1 {
-	//		l.Printf(l.traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, "-", sql)
-	//	} else {
-	//		l.Printf(l.traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, rows, sql)
-	//	}
-	//}
+
+	traceStr := "[%.3fms] [rows:%v] %s"
+	traceWarnStr := "%s\n[%.3fms] [rows:%v] %s"
+	traceErrStr := "%s\n[%.3fms] [rows:%v] %s"
+
+	if l.LogLevel <= glogger.Silent {
+		return
+	}
+
+	elapsed := time.Since(begin)
+	switch {
+	case err != nil && l.Config.LogLevel >= glogger.Error && (!errors.Is(err, gorm.ErrRecordNotFound) || !l.IgnoreRecordNotFoundError):
+		sql, rows := fc()
+		if rows == -1 {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Errorf(traceErrStr, err, float64(elapsed.Nanoseconds())/1e6, "-", sql)
+		} else {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Errorf(traceErrStr, err, float64(elapsed.Nanoseconds())/1e6, rows, sql)
+		}
+	case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.LogLevel >= glogger.Warn:
+		sql, rows := fc()
+		slowLog := fmt.Sprintf("SLOW SQL >= %v", l.SlowThreshold)
+		if rows == -1 {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Warnf(traceWarnStr, slowLog, float64(elapsed.Nanoseconds())/1e6, "-", sql)
+		} else {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Warnf(traceWarnStr, slowLog, float64(elapsed.Nanoseconds())/1e6, rows, sql)
+		}
+	case l.LogLevel == glogger.Info:
+		sql, rows := fc()
+		if rows == -1 {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Infof(traceStr, float64(elapsed.Nanoseconds())/1e6, "-", sql)
+		} else {
+			log.WithContext(ctx).WithField("file", logutil.CallerInfo(4)).Infof(traceStr, float64(elapsed.Nanoseconds())/1e6, rows, sql)
+		}
+	}
 }
 
 func NewGormLogger() glogger.Interface {
