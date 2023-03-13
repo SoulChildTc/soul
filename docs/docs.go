@@ -37,6 +37,74 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/system/user/login": {
+            "post": {
+                "description": "用户登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "手机号,密码",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回token",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/user/register": {
+            "post": {
+                "description": "用户注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "用户注册",
+                "parameters": [
+                    {
+                        "description": "用户信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ResponseBody"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -46,6 +114,55 @@ const docTemplate = `{
                 "status": {
                     "type": "string",
                     "example": "pong"
+                }
+            }
+        },
+        "dto.Login": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "password"
+            ],
+            "properties": {
+                "mobile": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Register": {
+            "type": "object",
+            "required": [
+                "mobile",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "httputil.ResponseBody": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "msg": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         }
