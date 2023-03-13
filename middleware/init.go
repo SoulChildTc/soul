@@ -16,6 +16,6 @@ func InitMiddleware(r *gin.Engine) {
 	// JWT Auth
 	//r.Use(JwtAuth)
 
-	// TODO 跨域处理
-
+	// 跨域处理
+	r.Use(Cors)
 }
