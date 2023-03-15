@@ -38,6 +38,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/system/user/info": {
+            "get": {
+                "description": "用户信息",
+                "tags": [
+                    "User"
+                ],
+                "summary": "用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization token",
+                        "name": "X-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回用户信息",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
         "/system/user/login": {
             "post": {
                 "description": "用户登录",
@@ -58,7 +84,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.Login"
+                            "$ref": "#/definitions/dto.SystemLogin"
                         }
                     }
                 ],
@@ -92,7 +118,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.Register"
+                            "$ref": "#/definitions/dto.SystemRegister"
                         }
                     }
                 ],
@@ -117,7 +143,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Login": {
+        "dto.SystemLogin": {
             "type": "object",
             "required": [
                 "mobile",
@@ -132,7 +158,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Register": {
+        "dto.SystemRegister": {
             "type": "object",
             "required": [
                 "mobile",

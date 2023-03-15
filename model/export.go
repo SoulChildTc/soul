@@ -5,5 +5,5 @@ import (
 )
 
 type (
-	User system.User
+	SystemUser system.User
 )

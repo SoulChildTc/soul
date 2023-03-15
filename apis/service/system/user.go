@@ -10,25 +10,25 @@ import (
 
 type User struct{}
 
-func (s *User) Register(user dto.Register) (string, bool) {
+func (s *User) Register(user dto.SystemRegister) (string, bool) {
 	if user.Username == "admin" {
 		return "禁止使用admin注册", false
 	}
 
-	existUser := dao.UserDAO.GetUserByMobile(user.Mobile)
+	existUser := dao.SystemUser.GetUserByMobile(user.Mobile)
 	if existUser != nil {
 		return "手机号已存在", false
 	}
 
 	// 创建新用户
-	newUser := &model.User{
+	newUser := &model.SystemUser{
 		Username: user.Username,
 		Mobile:   user.Mobile,
 		Password: utils.PasswdMd5Digest(user.Password),
 		Email:    user.Email,
 	}
 
-	err := dao.UserDAO.CreateUser(newUser)
+	err := dao.SystemUser.CreateUser(newUser)
 	if err != nil {
 		return err.Error(), false
 	}
@@ -36,9 +36,8 @@ func (s *User) Register(user dto.Register) (string, bool) {
 	return "注册成功", true
 }
 
-func (s *User) Login(user dto.Login) (string, bool) {
-	log.Info("test service")
-	existUser := dao.UserDAO.GetUserByMobile(user.Mobile)
+func (s *User) Login(user dto.SystemLogin) (string, bool) {
+	existUser := dao.SystemUser.GetUserByMobile(user.Mobile)
 	if existUser == nil {
 		return "账号不存在", false
 	}
@@ -53,4 +52,12 @@ func (s *User) Login(user dto.Login) (string, bool) {
 	}
 
 	return token, true
+}
+
+func (s *User) Info(userId uint) (*model.SystemUser, bool) {
+	user := dao.SystemUser.GetUserById(userId)
+	if user == nil {
+		return nil, false
+	}
+	return user, true
 }

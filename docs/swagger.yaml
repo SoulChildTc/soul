@@ -5,7 +5,7 @@ definitions:
         example: pong
         type: string
     type: object
-  dto.Login:
+  dto.SystemLogin:
     properties:
       mobile:
         type: string
@@ -15,7 +15,7 @@ definitions:
     - mobile
     - password
     type: object
-  dto.Register:
+  dto.SystemRegister:
     properties:
       email:
         type: string
@@ -60,6 +60,23 @@ paths:
       summary: health check
       tags:
       - core
+  /system/user/info:
+    get:
+      description: 用户信息
+      parameters:
+      - description: Authorization token
+        in: header
+        name: X-Token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 成功返回用户信息
+          schema:
+            $ref: '#/definitions/httputil.ResponseBody'
+      summary: 用户信息
+      tags:
+      - User
   /system/user/login:
     post:
       consumes:
@@ -71,7 +88,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.Login'
+          $ref: '#/definitions/dto.SystemLogin'
       produces:
       - application/json
       responses:
@@ -93,7 +110,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.Register'
+          $ref: '#/definitions/dto.SystemRegister'
       produces:
       - application/json
       responses:

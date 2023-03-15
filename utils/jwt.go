@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"soul/global"
 	"time"
@@ -45,6 +46,7 @@ func CreateJwtToken(userid int, username string) (string, error) {
 }
 
 func ParseJwtToken(tokenString string) (*CustomClaims, error) {
+	fmt.Println(tokenString)
 	signingKey := []byte(global.Config.Jwt.Secret)
 	tokenObj, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return signingKey, nil

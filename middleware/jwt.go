@@ -22,5 +22,6 @@ func JwtAuth(c *gin.Context) {
 		return
 	}
 
-	c.Set("token", tokenObj)
+	c.Set("userId", tokenObj.UserID)
+	//c.Set("token", tokenObj)
 }
