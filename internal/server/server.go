@@ -11,6 +11,7 @@ import (
 	"soul/internal/logger"
 	"soul/middleware"
 	"soul/router"
+	"soul/utils/httputil"
 	"syscall"
 	"time"
 )
@@ -33,6 +34,9 @@ func StartServer() {
 
 	// 初始化路由和路由中间件
 	router.InitRouter(r)
+
+	// 注册自定义验证器
+	httputil.RegisterAllValidator()
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", global.Config.Listen, global.Config.Port),
