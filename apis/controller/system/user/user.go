@@ -15,7 +15,7 @@ import (
 // @produce		json
 // @param		data body dto.SystemLogin true "手机号,密码"
 // @success		200 object httputil.ResponseBody "成功返回token"
-// @router		/system/user/login [post]
+// @router		/api/v1/system/user/login [post]
 func Login(c *gin.Context) {
 	var u dto.SystemLogin
 	err := c.ShouldBindJSON(&u)
@@ -40,7 +40,7 @@ func Login(c *gin.Context) {
 // @produce		json
 // @param		data body dto.SystemRegister true "用户信息"
 // @success		200 object httputil.ResponseBody "成功返回"
-// @router		/system/user/register [post]
+// @router		/api/v1/system/user/register [post]
 func Register(c *gin.Context) {
 	var u dto.SystemRegister
 	err := c.ShouldBindJSON(&u)
@@ -62,7 +62,7 @@ func Register(c *gin.Context) {
 // @summary		用户信息
 // @Param 		X-Token header string true "Authorization token"
 // @success		200 object httputil.ResponseBody "成功返回用户信息"
-// @router		/system/user/info [get]
+// @router		/api/v1/system/user/info [get]
 func Info(c *gin.Context) {
 	userId := c.GetUint("userId")
 	res, ok := service.SystemUser.Info(userId)
