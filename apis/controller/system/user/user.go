@@ -1,11 +1,14 @@
 package user
 
 import (
+	"github.com/SoulChildTc/soul/apis/dto"
+	"github.com/SoulChildTc/soul/apis/service"
+	"github.com/SoulChildTc/soul/utils/httputil"
 	"github.com/gin-gonic/gin"
-	"soul/apis/dto"
-	"soul/apis/service"
-	"soul/utils/httputil"
 )
+
+type SystemUserController struct {
+}
 
 // Login
 //

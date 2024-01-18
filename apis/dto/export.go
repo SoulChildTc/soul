@@ -1,6 +1,6 @@
 package dto
 
-import "soul/apis/dto/system"
+import "github.com/SoulChildTc/soul/apis/dto/system"
 
 type (
 	SystemRegister system.Register

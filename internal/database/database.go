@@ -3,13 +3,13 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/SoulChildTc/soul/global"
+	log "github.com/SoulChildTc/soul/internal/logger"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"os"
-	"soul/global"
-	log "soul/internal/logger"
 	"time"
 )
 

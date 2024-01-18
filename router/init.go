@@ -1,10 +1,10 @@
 package router
 
 import (
+	"github.com/SoulChildTc/soul/middleware"
+	"github.com/SoulChildTc/soul/router/api/v1/system"
+	"github.com/SoulChildTc/soul/router/core"
 	"github.com/gin-gonic/gin"
-	"soul/middleware"
-	"soul/router/api/v1/system"
-	"soul/router/core"
 )
 
 func registerRoute(r gin.IRouter, groupName string, register func(r *gin.RouterGroup), middlewares ...gin.HandlerFunc) {

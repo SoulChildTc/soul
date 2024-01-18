@@ -1,7 +1,7 @@
 package system
 
 import (
-	"soul/model/common"
+	"github.com/SoulChildTc/soul/model/common"
 )
 
 type User struct {

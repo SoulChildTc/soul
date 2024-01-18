@@ -1,11 +1,11 @@
 package system
 
 import (
-	"soul/apis/dao"
-	"soul/apis/dto"
-	log "soul/internal/logger"
-	"soul/model"
-	"soul/utils"
+	"github.com/SoulChildTc/soul/apis/dao"
+	"github.com/SoulChildTc/soul/apis/dto"
+	log "github.com/SoulChildTc/soul/internal/logger"
+	"github.com/SoulChildTc/soul/model"
+	"github.com/SoulChildTc/soul/utils"
 )
 
 type User struct{}

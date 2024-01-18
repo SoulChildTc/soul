@@ -2,11 +2,11 @@ package system
 
 import (
 	"errors"
+	"github.com/SoulChildTc/soul/global"
+	log "github.com/SoulChildTc/soul/internal/logger"
+	"github.com/SoulChildTc/soul/model"
+	"github.com/SoulChildTc/soul/model/common"
 	"gorm.io/gorm"
-	"soul/global"
-	log "soul/internal/logger"
-	"soul/model"
-	"soul/model/common"
 )
 
 type User struct{}

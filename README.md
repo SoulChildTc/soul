@@ -4,7 +4,6 @@
 
 ## Done:
 - [x] 配置文件读取
-- [x] 命令行、环境变量指定配置(flag仅-c/-e/-m, env仅RUN_ENV)
 - [x] Gin 集成、路由管理、中间件、优雅停止
 - [x] logrus 日志库集成
 - [x] lumberjack 日志轮转

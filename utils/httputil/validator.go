@@ -2,10 +2,10 @@ package httputil
 
 import (
 	"errors"
+	"github.com/SoulChildTc/soul/utils"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"regexp"
-	"soul/utils"
 	"strings"
 )
 

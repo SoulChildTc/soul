@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"soul/global"
-	"soul/internal/config"
-	"soul/internal/database"
-	"soul/internal/logger"
-	"soul/internal/server"
+	"github.com/SoulChildTc/soul/global"
+	"github.com/SoulChildTc/soul/internal/config"
+	"github.com/SoulChildTc/soul/internal/database"
+	"github.com/SoulChildTc/soul/internal/logger"
+	"github.com/SoulChildTc/soul/internal/server"
+	"os"
 )
 
 func init() {
@@ -21,6 +22,7 @@ func init() {
 	// 数据迁移
 	if global.V.GetBool("migrate") {
 		database.InitDBMigrate()
+		os.Exit(0)
 	}
 
 }

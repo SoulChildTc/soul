@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/SoulChildTc/soul/global"
+	"github.com/SoulChildTc/soul/utils/logutil"
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
-	"soul/global"
-	"soul/utils/logutil"
 	"strings"
 	"time"
 )

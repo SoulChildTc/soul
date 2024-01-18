@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/SoulChildTc/soul/utils"
+	"github.com/SoulChildTc/soul/utils/httputil"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"soul/utils"
-	"soul/utils/httputil"
 	"strings"
 )
 

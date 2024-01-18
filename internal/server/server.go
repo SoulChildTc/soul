@@ -3,31 +3,30 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/SoulChildTc/soul/global"
+	"github.com/SoulChildTc/soul/internal/logger"
+	"github.com/SoulChildTc/soul/middleware"
+	"github.com/SoulChildTc/soul/router"
+	"github.com/SoulChildTc/soul/utils/httputil"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"os/signal"
-	"soul/global"
-	"soul/internal/logger"
-	"soul/middleware"
-	"soul/router"
-	"soul/utils/httputil"
 	"syscall"
 	"time"
 )
 
 func StartServer() {
-	switch global.Config.Env {
+	switch global.Config.Mode {
 	case "test":
 		gin.SetMode(gin.TestMode)
-	case "prod":
-		gin.SetMode(gin.ReleaseMode)
-	default:
+	case "debug":
 		gin.SetMode(gin.DebugMode)
+	default:
+		gin.SetMode(gin.ReleaseMode)
 	}
 
 	r := gin.New()
-	gin.Default()
 
 	// 初始化全局中间件
 	middleware.InitMiddleware(r)
@@ -46,7 +45,7 @@ func StartServer() {
 	go func() {
 		// 服务连接
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Info("listen: %s\n", err)
+			logger.Error("listen: %s\n", err)
 		}
 	}()
 	quit := make(chan os.Signal)

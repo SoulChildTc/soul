@@ -1,6 +1,6 @@
 package service
 
-import "soul/apis/service/system"
+import "github.com/SoulChildTc/soul/apis/service/system"
 
 var (
 	SystemUser system.User

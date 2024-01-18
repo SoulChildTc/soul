@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// InitMiddleware 加载全局中间件
 func InitMiddleware(r *gin.Engine) {
 	// panic 拦截器
 	r.Use(ErrorInterceptor)

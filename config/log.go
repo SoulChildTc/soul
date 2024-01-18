@@ -6,6 +6,7 @@ type Log struct {
 	Console      bool   `yaml:"console" mapstructure:"console"`
 	CloseFileLog bool   `yaml:"closeFileLog" mapstructure:"closeFileLog"`
 	Rotate       Rotate `yaml:"rotate" mapstructure:"rotate"`
+	Format       string `yaml:"format" mapstructure:"format"`
 }
 
 type Rotate struct {

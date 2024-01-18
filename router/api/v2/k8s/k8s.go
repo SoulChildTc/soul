@@ -1,8 +1,8 @@
 package k8s
 
 import (
+	"github.com/SoulChildTc/soul/apis/controller/core"
 	"github.com/gin-gonic/gin"
-	"soul/apis/controller/core"
 )
 
 // k8s模块路由

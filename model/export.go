@@ -1,7 +1,7 @@
 package model
 
 import (
-	"soul/model/system"
+	"github.com/SoulChildTc/soul/model/system"
 )
 
 type (

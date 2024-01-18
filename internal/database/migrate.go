@@ -2,8 +2,8 @@ package database
 
 import (
 	"fmt"
-	"soul/global"
-	"soul/model"
+	"github.com/SoulChildTc/soul/global"
+	"github.com/SoulChildTc/soul/model"
 )
 
 func InitDBMigrate() {

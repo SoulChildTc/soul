@@ -2,13 +2,13 @@ package middleware
 
 import (
 	"errors"
+	log "github.com/SoulChildTc/soul/internal/logger"
+	"github.com/SoulChildTc/soul/utils/logutil"
 	"github.com/gin-gonic/gin"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"os"
-	log "soul/internal/logger"
-	"soul/utils/logutil"
 	"strings"
 )
 

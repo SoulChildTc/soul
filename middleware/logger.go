@@ -1,13 +1,13 @@
 package middleware
 
 import (
+	"github.com/SoulChildTc/soul/utils/logutil"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"soul/utils/logutil"
 	"time"
 )
 
-import log "soul/internal/logger"
+import log "github.com/SoulChildTc/soul/internal/logger"
 
 func Logger(c *gin.Context) {
 	// 开始时间

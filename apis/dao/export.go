@@ -1,6 +1,6 @@
 package dao
 
-import "soul/apis/dao/system"
+import "github.com/SoulChildTc/soul/apis/dao/system"
 
 var (
 	SystemUser system.User

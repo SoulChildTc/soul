@@ -2,12 +2,12 @@ package logger
 
 import (
 	"fmt"
+	"github.com/SoulChildTc/soul/global"
+	"github.com/SoulChildTc/soul/utils/logutil"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"os"
-	"soul/global"
-	"soul/utils/logutil"
 )
 
 var (
@@ -60,10 +60,10 @@ func InitLogger() {
 	//logger.SetReportCaller(true)  // 因为封装的原因,自带的输出位置有问题(暂时无法使用),使用log.InfoC可以输出代码位置
 
 	// 设置日志格式
-	if global.Config.Env == "dev" {
-		logger.SetFormatter(&logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05", PadLevelText: true})
-	} else {
+	if global.Config.Log.Format == "json" {
 		logger.SetFormatter(&logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
+	} else {
+		logger.SetFormatter(&logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05", PadLevelText: true})
 	}
 
 	level, err := logrus.ParseLevel(global.Config.Log.Level)

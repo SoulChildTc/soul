@@ -1,8 +1,8 @@
 package global
 
 import (
+	"github.com/SoulChildTc/soul/config"
 	"github.com/spf13/viper"
-	"soul/config"
 )
 
 var (

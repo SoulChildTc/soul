@@ -3,8 +3,8 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"github.com/SoulChildTc/soul/global"
 	"github.com/golang-jwt/jwt/v5"
-	"soul/global"
 	"time"
 )
 
